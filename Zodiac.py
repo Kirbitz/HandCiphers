@@ -1,18 +1,10 @@
 # Using z340 for the implementation
 # 340 characters (without spaces)
 
-# perhaps use double letters to represent letter combinations
-# ex.  'ty' == 'hz'  while 'ts' == 'eb'
-# maybe use other symbols
-
-# manually assign all characters, use a rand function?
-# if rand was used what would the process of decryption be?
-
 # Using 1,2 decimation with 3 sections of the length(height) 9, 9 , 2
 
 def Z340(text):
-  # char assigns to be shifted by value of other paired letter.
-  # for example, for 'at'   'a' would be shifted in a direction w/ distance of 't' and vice versa
+  # char assigns to be shifted by value of other paired letter plus a constant.
   alphabet = ['/', '.', '-', '&', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
   'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
   i = 0
@@ -54,7 +46,6 @@ def Z340(text):
       l = (l + 2) % 17
       k = (k + 1) % 2
 
-    #first 4 should be &n..
   encrypt = ""
   for r in range(9):
     for q in range(17):
@@ -65,10 +56,111 @@ def Z340(text):
   for v in range(2):
     for u in range(17):
       encrypt += lastblock[v][u]
-  print(encrypt)
-  #print (firstblock, secondblock, lastblock)
-  #write if statement that wraps around 2D array to avoid out of bounds error
-    
-   
+  return(encrypt)
+
+def decrypt(message):
+  alphabet = ['/', '.', '-', '&', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+  'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  i = 0
+  l = 0
+  k = 0
+  m = 0
+  n = 0
+  count = 0
+  tempblock1 = [['' for m in range(17)] for n in range(9)]
+  tempblock2 = [['' for m in range(17)] for n in range(9)]
+  tempblock3 = [['' for m in range(17)] for n in range(9)]
+  firstblock = [['' for l in range(17)] for k in range(9)]
+  secondblock = [['' for l in range(17)] for k in range(9)]
+  lastblock = [['' for l in range(17)] for k in range(2)]
+  for i in range(0, len(message), 1):
+    if tempblock1[n][m] == '':
+      tempblock1[n][m] = message[i]
+      if m + 1 == 17:
+        m = 0
+        n + 1
+      else:
+        m + 1
+      if tempblock1[8][16] != '':
+        m = 0
+        n = 0
+    elif tempblock2[n][m] == '' and tempblock1[n][m] != '':
+      tempblock2[n][m] = message[i]
+      if m + 1 == 17:
+        m = 0
+        n + 1
+      else:
+        m + 1
+      if tempblock2[8][16] != '':
+        m = 0
+        n = 0
+    elif tempblock3[n][m] == '' and tempblock2[n][m] != '':
+      tempblock3[n][m] = message[i]
+      if m + 1 == 17:
+        m = 0
+        n + 1
+      else:
+        m + 1
+      if tempblock3[1][16] != '':
+        m = 0
+        n = 0
+  while lastblock[1][16] == '':
+    if firstblock[8][16] == '' and count < 153:
+        firstblock[n][m] = tempblock1[k][l]
+        l = (l + 2) % 17
+        k = (k + 1) % 9
+        if m + 1 == 17:
+          m = 0
+          n + 1
+        else:
+          m + 1
+        count += 1
+        if count == 153:
+          m = 0
+          n = 0
+    elif secondblock[8][16] == '' and count > 152 and count < 306:
+        secondblock[n][m] = tempblock2[k][l]
+        l = (l + 2) % 17
+        k = (k + 1) % 9
+        if m + 1 == 17:
+          m = 0
+          n + 1
+        else:
+          m + 1
+        count += 1
+        if count == 306:
+          m = 0
+          n = 0
+    elif lastblock[1][16] == '' and count > 305:
+        lastblock[n][m] = tempblock3[k][l]
+        l = (l + 2) % 17
+        k = (k + 1) % 2
+        if m + 1 == 17:
+          m = 0
+          n + 1
+        else:
+          m + 1
+        count += 1
+  print(firstblock, secondblock, lastblock)
+  #encrypted = ""
+  #for r in range(9):
+    #for q in range(17):
+      #encrypted += firstblock[r][q]
+  #for t in range(9):
+    #for s in range(17):
+      #encrypted += secondblock[t][s]
+  #for v in range(2):
+    #for u in range(17):
+      #encrypted += lastblock[v][u]
+  #decrypted = ""
+  #for j in range(0, len(encrypted), 2):
+    #temp1 = encrypted[i]
+    #temp2 = encrypted[i+1]
+    #enc1 = alphabet.index(temp1)
+    #enc2 = alphabet.index(temp2)
+    #dec2 = alphabet[(enc1 - 5) % 30]
+    #dec1 = alphabet[((2 * alphabet.index(dec2) - (alphabet.index(enc2) - 5 )) % 30)]
+    #decrypted += dec1
+    #decrypted += dec2
+  #print(decrypted)
   
-  #write loop to output all arrays from left to right and up to down
