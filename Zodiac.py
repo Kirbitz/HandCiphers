@@ -76,9 +76,12 @@ def decrypt(message):
   for i in range(0, len(message), 1):
     if tempblock1[n][m] == '':
       tempblock1[n][m] = message[i]
-      if m + 1 == 17:
+      if m == 16:
         m = 0
-        n + 1
+        if n == 8:
+          n = 0
+        else:
+          n + 1
       else:
         m + 1
       if tempblock1[8][16] != '':
@@ -86,21 +89,23 @@ def decrypt(message):
         n = 0
     elif tempblock2[n][m] == '' and tempblock1[n][m] != '':
       tempblock2[n][m] = message[i]
-      if m + 1 == 17:
+      if m == 16:
         m = 0
-        n + 1
-      else:
-        m + 1
+        if n == 8:
+          n = 0
+        else:
+          n + 1
       if tempblock2[8][16] != '':
         m = 0
         n = 0
     elif tempblock3[n][m] == '' and tempblock2[n][m] != '':
       tempblock3[n][m] = message[i]
-      if m + 1 == 17:
+      if m == 16:
         m = 0
-        n + 1
-      else:
-        m + 1
+        if n == 1:
+          n = 0
+        else:
+          n + 1
       if tempblock3[1][16] != '':
         m = 0
         n = 0
@@ -109,11 +114,12 @@ def decrypt(message):
         firstblock[n][m] = tempblock1[k][l]
         l = (l + 2) % 17
         k = (k + 1) % 9
-        if m + 1 == 17:
+        if m == 16:
           m = 0
-          n + 1
-        else:
-          m + 1
+          if n == 8:
+            n = 0
+          else:
+            n + 1
         count += 1
         if count == 153:
           m = 0
@@ -122,11 +128,12 @@ def decrypt(message):
         secondblock[n][m] = tempblock2[k][l]
         l = (l + 2) % 17
         k = (k + 1) % 9
-        if m + 1 == 17:
+        if m == 16:
           m = 0
-          n + 1
-        else:
-          m + 1
+          if n == 8:
+            n = 0
+          else:
+            n + 1
         count += 1
         if count == 306:
           m = 0
@@ -135,11 +142,12 @@ def decrypt(message):
         lastblock[n][m] = tempblock3[k][l]
         l = (l + 2) % 17
         k = (k + 1) % 2
-        if m + 1 == 17:
+        if m == 16:
           m = 0
-          n + 1
-        else:
-          m + 1
+          if n == 1:
+            n = 0
+          else:
+            n + 1
         count += 1
   print(firstblock, secondblock, lastblock)
   #encrypted = ""
