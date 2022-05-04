@@ -69,7 +69,7 @@ def decrypt(message):
   count = 0
   tempblock1 = [['' for m in range(17)] for n in range(9)]
   tempblock2 = [['' for m in range(17)] for n in range(9)]
-  tempblock3 = [['' for m in range(17)] for n in range(9)]
+  tempblock3 = [['' for m in range(17)] for n in range(2)]
   firstblock = [['' for l in range(17)] for k in range(9)]
   secondblock = [['' for l in range(17)] for k in range(9)]
   lastblock = [['' for l in range(17)] for k in range(2)]
