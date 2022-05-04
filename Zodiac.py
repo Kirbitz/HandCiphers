@@ -95,6 +95,8 @@ def decrypt(message):
           n = 0
         else:
           n + 1
+      else:
+        m + 1
       if tempblock2[8][16] != '':
         m = 0
         n = 0
@@ -106,6 +108,8 @@ def decrypt(message):
           n = 0
         else:
           n + 1
+      else: 
+        m + 1
       if tempblock3[1][16] != '':
         m = 0
         n = 0
@@ -120,6 +124,8 @@ def decrypt(message):
             n = 0
           else:
             n + 1
+        else: 
+          m + 1
         count += 1
         if count == 153:
           m = 0
@@ -134,6 +140,8 @@ def decrypt(message):
             n = 0
           else:
             n + 1
+        else:
+          m + 1
         count += 1
         if count == 306:
           m = 0
@@ -148,6 +156,8 @@ def decrypt(message):
             n = 0
           else:
             n + 1
+        else:
+          m + 1
         count += 1
   print(firstblock, secondblock, lastblock)
   #encrypted = ""
