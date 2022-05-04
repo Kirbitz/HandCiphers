@@ -81,9 +81,9 @@ def decrypt(message):
         if n == 8:
           n = 0
         else:
-          n + 1
+          n += 1
       else:
-        m + 1
+        m += 1
       if tempblock1[8][16] != '':
         m = 0
         n = 0
@@ -94,9 +94,9 @@ def decrypt(message):
         if n == 8:
           n = 0
         else:
-          n + 1
+          n += 1
       else:
-        m + 1
+        m += 1
       if tempblock2[8][16] != '':
         m = 0
         n = 0
@@ -107,9 +107,9 @@ def decrypt(message):
         if n == 1:
           n = 0
         else:
-          n + 1
+          n += 1
       else: 
-        m + 1
+        m += 1
       if tempblock3[1][16] != '':
         m = 0
         n = 0
@@ -123,9 +123,9 @@ def decrypt(message):
           if n == 8:
             n = 0
           else:
-            n + 1
+            n += 1
         else: 
-          m + 1
+          m += 1
         count += 1
         if count == 153:
           m = 0
@@ -139,9 +139,9 @@ def decrypt(message):
           if n == 8:
             n = 0
           else:
-            n + 1
+            n += 1
         else:
-          m + 1
+          m += 1
         count += 1
         if count == 306:
           m = 0
@@ -155,30 +155,30 @@ def decrypt(message):
           if n == 1:
             n = 0
           else:
-            n + 1
+            n += 1
         else:
-          m + 1
-        count += 1
-  print(firstblock, secondblock, lastblock)
-  #encrypted = ""
-  #for r in range(9):
-    #for q in range(17):
-      #encrypted += firstblock[r][q]
-  #for t in range(9):
-    #for s in range(17):
-      #encrypted += secondblock[t][s]
-  #for v in range(2):
-    #for u in range(17):
-      #encrypted += lastblock[v][u]
-  #decrypted = ""
-  #for j in range(0, len(encrypted), 2):
-    #temp1 = encrypted[i]
-    #temp2 = encrypted[i+1]
-    #enc1 = alphabet.index(temp1)
-    #enc2 = alphabet.index(temp2)
-    #dec2 = alphabet[(enc1 - 5) % 30]
-    #dec1 = alphabet[((2 * alphabet.index(dec2) - (alphabet.index(enc2) - 5 )) % 30)]
-    #decrypted += dec1
-    #decrypted += dec2
-  #print(decrypted)
+          m += 1
+          count += 1
+  #print(firstblock, secondblock, lastblock)
+  encrypted = ""
+  for r in range(9):
+    for q in range(17):
+      encrypted += firstblock[r][q]
+  for t in range(9):
+    for s in range(17):
+      encrypted += secondblock[t][s]
+  for v in range(2):
+    for u in range(17):
+      encrypted += lastblock[v][u]
+  decrypted = ""
+  for j in range(0, len(encrypted), 2):
+    temp1 = encrypted[j]
+    temp2 = encrypted[j+1]
+    enc1 = alphabet.index(temp1)
+    enc2 = alphabet.index(temp2)
+    dec2 = alphabet[(enc1 - 5) % 30]
+    dec1 = alphabet[((2 * alphabet.index(dec2) - (enc2 - 5 )) % 30)]
+    decrypted += dec1
+    decrypted += dec2
+  print(decrypted)
   
