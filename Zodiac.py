@@ -1,18 +1,32 @@
+import re
+from random import choice
 # Using z340 for the implementation
-# 340 characters (without spaces)
-
 # Using 1,2 decimation with 3 sections of the length(height) 9, 9 , 2
 
+#encryption function
 def Z340(text):
+
+  #converts all text passed in to lowercase and removes spaces
+  text = re.sub("[^a-z/.\-&]", "", text.lower())
+
   # char assigns to be shifted by value of other paired letter plus a constant.
   alphabet = ['/', '.', '-', '&', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
   'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+  #adds random characters to text if message is less than 340 characters
+  if len(text) < 340:
+    for i in range(340 - len(text)):
+      text += choice(alphabet)
+
+  #creates empty blocks for charcters to be passed into in 9, 9, 2 row format
   i = 0
   l = 0
   k = 0
   firstblock = [['' for l in range(17)] for k in range(9)]
   secondblock = [['' for l in range(17)] for k in range(9)]
   lastblock = [['' for l in range(17)] for k in range(2)]
+
+  #increments through each pair of characters in text and has the characters modify each other
   for i in range(0, len(text), 2):
     temp1 = text[i]
     temp2 = text[i+1]
@@ -21,6 +35,8 @@ def Z340(text):
     mod = (m - n - 5 )% 30
     temp3 = alphabet[(m - mod) % 30]
     temp4 = alphabet[(n - mod) % 30]
+
+    #puts first character of pair into its appropriate block
     if firstblock[k][l] == '':
       firstblock[k][l] = temp3
       l = (l + 2) % 17
@@ -33,6 +49,8 @@ def Z340(text):
       lastblock[k][l] = temp3
       l = (l + 2) % 17
       k = (k + 1) % 2
+
+    ##puts second character of pair into its appropriate block
     if firstblock[k][l] == '':
       firstblock[k][l] = temp4
       l = (l + 2) % 17
@@ -46,6 +64,7 @@ def Z340(text):
       l = (l + 2) % 17
       k = (k + 1) % 2
 
+  #collects the new order of charcters into a string to output
   encrypt = ""
   for r in range(9):
     for q in range(17):
@@ -58,6 +77,7 @@ def Z340(text):
       encrypt += lastblock[v][u]
   return(encrypt)
 
+#decrypts the encrypted message passed in
 def decrypt(message):
   alphabet = ['/', '.', '-', '&', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
   'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -67,12 +87,16 @@ def decrypt(message):
   m = 0
   n = 0
   count = 0
+
+  #creates empty blocks for temporal storage and final character storage
   tempblock1 = [['' for m in range(17)] for n in range(9)]
   tempblock2 = [['' for m in range(17)] for n in range(9)]
   tempblock3 = [['' for m in range(17)] for n in range(2)]
   firstblock = [['' for l in range(17)] for k in range(9)]
   secondblock = [['' for l in range(17)] for k in range(9)]
   lastblock = [['' for l in range(17)] for k in range(2)]
+
+  #puts individual characters into temporary block to be rearranged
   for i in range(0, len(message), 1):
     if tempblock1[n][m] == '':
       tempblock1[n][m] = message[i]
@@ -113,6 +137,8 @@ def decrypt(message):
       if tempblock3[1][16] != '':
         m = 0
         n = 0
+  
+  #characters are unscrambled from the 1,2 decimation temporary block to final character block
   while lastblock[1][16] == '':
     if firstblock[8][16] == '' and count < 153:
         firstblock[n][m] = tempblock1[k][l]
@@ -159,7 +185,8 @@ def decrypt(message):
         else:
           m += 1
           count += 1
-  #print(firstblock, secondblock, lastblock)
+  
+  #puts the correctly ordered characters into a string to be decrypted
   encrypted = ""
   for r in range(9):
     for q in range(17):
@@ -170,6 +197,8 @@ def decrypt(message):
   for v in range(2):
     for u in range(17):
       encrypted += lastblock[v][u]
+
+  #decrypts the pair of charcters that are next to each other and then appended to a final string
   decrypted = ""
   for j in range(0, len(encrypted), 2):
     temp1 = encrypted[j]
